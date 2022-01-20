@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: rgb(248, 248, 44);
+        }
+
+        .input {
+            margin-top: 20px;
+        }
+
+
+        .title {
+            text-align: center;
+            font-weight: bolder;
+            font-size: 40px;
+            color: brown;
+            background-color: rgb(215, 236, 22);
+        }
+
+        .container {
+
+            display: flex;
+            flex-direction: column;
+        }
+
+        .list {
+
+            width: 400px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th {
+            padding: 5px;
+
+        }
+
+        td {
+            padding: 5px;
+        }
+
+        .delete-btn {
+            background-color: red;
+            color: white;
+        }
+
+        .main {
+            color: darkblue;
+        }
+
+        table {
+            font-size: larger;
+            padding: 15px;
+        }
+
+        .input-box {
+            border: 1px solid blue;
+            font-size: 20px;
+            padding: 3px;
+        }
+
+        #list {
+            margin-top: 10px;
+        }
+
+        #btn {
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="title"> AJAY'S WEATHER APP</div>
+
+        <div class="input">
+
+            <input type="text" id="userInput" placeholder="Enter City" autocomplete="off" class="input-box">
+            <button id="btn" onclick="">Search</button>
+
+        </div>
+
+        <div id="list">
+            <table id="table">
+                <tr class="main">
+                    <th>City</th>
+                    <th>Temperature(*C)</th>
+                    <th>Description</th>
+                    <th>Humidity</th>
+                </tr>
+
+            </table>
+
+        </div>
+    </div>
+
+
+
+    <script>
+        const table = document.getElementById('table');
+        //Delete Functionality
+        table.addEventListener('click', function deleteItem(e) {
+            if (e.target.classList.contains('delete-btn')) {
+                e.target.parentNode.parentNode.remove();
+            };
+
+
+        })
+
+
+
+
+        let URL = "https://python3-dot-parul-arena-2.appspot.com/test?cityname="
+
+
+        const btn = document.getElementById('btn');
+
+
+
+        btn.addEventListener('click', function () {
+            var input = document.getElementById("userInput").value;
+
+
+            let str = URL + input;
+            //console.log(str);
+
+            fetch(str)
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.status === 'failed') {
+                        alert("City not found, please recheck the spelling")
+                    }
+                    else {
+                        table.innerHTML += ` <tr>
+                    <th>${input}</th>
+                    <th>${data.temp_in_celsius}</th>
+                    <th>${data.description}</th>
+                    <th>${data.humidity_in_percent}</th>
+                    <th><button  class="delete-btn">Delete</button></th>
+                </tr>
+            `;
+                    }
+                    str = '';
+                })
+        })
+    </script>
+</body>
+
+</html>
